@@ -55,6 +55,7 @@ class CrossPointSettings : public PersistableStore<CrossPointSettings> {
     STATUS_BAR_CLOCK_HIDE = 0,
     STATUS_BAR_CLOCK_RIGHT = 1,
     STATUS_BAR_CLOCK_LEFT = 2,
+    STATUS_BAR_CLOCK_TOP = 3,
     STATUS_BAR_CLOCK_MODE_COUNT
   };
 
@@ -380,8 +381,10 @@ class CrossPointSettings : public PersistableStore<CrossPointSettings> {
     // Visibility of the text lane. Clock hardware presence is the caller's
     // concern: pass halClock.isAvailable(), or true for layout reservation.
     bool textLaneVisible(bool clockAvailable) const {
+      const bool bottomClockVisible =
+          showsClock() && clockMode != STATUS_BAR_CLOCK_TOP && clockAvailable;
       return showChapterPageCount || showBookProgressPercent || showsTitle() || showBattery ||
-             (showsClock() && clockAvailable);
+             bottomClockVisible;
     }
   };
   StatusBarSpec statusBarSpec() const;

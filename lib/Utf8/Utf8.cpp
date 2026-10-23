@@ -94,6 +94,37 @@ std::string utf8ComposeNfc(const std::string& in) {
   return out;
 }
 
+
+void utf8FixHungarianLegacyAccents(std::string& text) {
+  for (size_t i = 0; i + 1 < text.size(); ++i) {
+    const auto first = static_cast<uint8_t>(text[i]);
+    const auto second = static_cast<uint8_t>(text[i + 1]);
+    if (first != 0xC3) continue;
+
+    switch (second) {
+      case 0xB5:  // õ -> ő
+        text[i] = static_cast<char>(0xC5);
+        text[i + 1] = static_cast<char>(0x91);
+        break;
+      case 0x95:  // Õ -> Ő
+        text[i] = static_cast<char>(0xC5);
+        text[i + 1] = static_cast<char>(0x90);
+        break;
+      case 0xBB:  // û -> ű
+        text[i] = static_cast<char>(0xC5);
+        text[i + 1] = static_cast<char>(0xB1);
+        break;
+      case 0x9B:  // Û -> Ű
+        text[i] = static_cast<char>(0xC5);
+        text[i + 1] = static_cast<char>(0xB0);
+        break;
+      default:
+        break;
+    }
+    ++i;
+  }
+}
+
 int utf8CodepointLen(const unsigned char c) {
   if (c < 0x80) return 1;          // 0xxxxxxx
   if ((c >> 5) == 0x6) return 2;   // 110xxxxx

@@ -26,10 +26,10 @@ void QrUtils::drawQrCode(const GfxRenderer& renderer, const Rect& bounds, const 
   }
 
   int version = 4;
-  if (len > 114) version = 10;
-  if (len > 395) version = 20;
-  if (len > 1066) version = 30;
-  if (len > 2110) version = 40;
+  if (len > 78) version = 10;
+  if (len > 271) version = 20;
+  if (len > 858) version = 30;
+  if (len > 1732) version = 40;
 
   // Make sure we have a large enough buffer on the heap to avoid blowing the stack
   uint32_t bufferSize = qrcode_getBufferSize(version);

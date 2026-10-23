@@ -20,6 +20,12 @@ void utf8TruncateChars(std::string& str, size_t numChars);
 // filename written by macOS) otherwise renders broken or blank.
 std::string utf8ComposeNfc(const std::string& in);
 
+
+// Repairs the legacy Hungarian substitutions used by some older ebooks:
+// õ/Õ stood for ő/Ő and û/Û stood for ű/Ű. Each replacement has the same
+// UTF-8 byte length, so the conversion can be performed in place.
+void utf8FixHungarianLegacyAccents(std::string& text);
+
 // The base letter a precomposed codepoint decomposes to, or 0 when there is
 // none ("é" -> "e", but "ø" -> 0: it is a letter in its own right, not
 // o-with-stroke). Lives here rather than in a caller because the compose table

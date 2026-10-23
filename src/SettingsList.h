@@ -214,6 +214,7 @@ inline std::vector<SettingInfo> getSettingsList(const SdCardFontRegistry* regist
     statusBarClockValues[CrossPointSettings::STATUS_BAR_CLOCK_HIDE] = StrId::STR_HIDE;
     statusBarClockValues[CrossPointSettings::STATUS_BAR_CLOCK_RIGHT] = StrId::STR_DIR_RIGHT;
     statusBarClockValues[CrossPointSettings::STATUS_BAR_CLOCK_LEFT] = StrId::STR_DIR_LEFT;
+    statusBarClockValues[CrossPointSettings::STATUS_BAR_CLOCK_TOP] = StrId::STR_TOP;
 
     std::vector<SettingInfo> v = {
         // --- Display ---

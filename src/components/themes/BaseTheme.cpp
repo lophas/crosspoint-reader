@@ -812,20 +812,30 @@ void BaseTheme::drawStatusBar(GfxRenderer& renderer, const float bookProgress, c
   if (sb.showsClock() && halClock.isAvailable()) {
     char timeBuf[9];
     if (halClock.formatTime(timeBuf, sizeof(timeBuf), sb.clockUtcOffsetQ, sb.clock12h)) {
-      int clockTextWidth = renderer.getTextWidth(SMALL_FONT_ID, timeBuf);
-      int clockX = 0;
-      // Position to the left or right of the progress text (with a small gap)
-      if (sb.clockMode == CrossPointSettings::STATUS_BAR_CLOCK_LEFT) {
-        clockX = leftClusterX + leftClusterWidth + (leftClusterWidth > 0 ? 10 : 0);
-        leftClusterWidth += clockTextWidth + 10;
-      } else if (sb.clockMode == CrossPointSettings::STATUS_BAR_CLOCK_RIGHT) {
-        clockX = rightClusterX - rightClusterWidth - (rightClusterWidth > 0 ? 10 : 0) - clockTextWidth;
-        rightClusterWidth += clockTextWidth + 10;
+      const int clockTextWidth = renderer.getTextWidth(SMALL_FONT_ID, timeBuf);
+
+      if (sb.clockMode == CrossPointSettings::STATUS_BAR_CLOCK_TOP) {
+        // Top-centred clock, independent of the bottom status-bar layout.
+        const int clockX = (renderer.getScreenWidth() - clockTextWidth) / 2;
+        const int clockLineHeight = renderer.getLineHeight(SMALL_FONT_ID);
+        const int topBandHeight = SETTINGS.screenMargin;
+        const int clockY = orientedMarginTop + 1;
+        renderer.drawText(SMALL_FONT_ID, clockX, clockY, timeBuf);
+      } else {
+        int clockX = 0;
+
+        if (sb.clockMode == CrossPointSettings::STATUS_BAR_CLOCK_LEFT) {
+          clockX = leftClusterX + leftClusterWidth + (leftClusterWidth > 0 ? 10 : 0);
+          leftClusterWidth += clockTextWidth + 10;
+        } else if (sb.clockMode == CrossPointSettings::STATUS_BAR_CLOCK_RIGHT) {
+          clockX = rightClusterX - rightClusterWidth - (rightClusterWidth > 0 ? 10 : 0) - clockTextWidth;
+          rightClusterWidth += clockTextWidth + 10;
+        }
+
+        renderer.drawText(SMALL_FONT_ID, clockX, textY, timeBuf);
       }
-      renderer.drawText(SMALL_FONT_ID, clockX, textY, timeBuf);
     }
   }
-
   // Draw Bookmark
   if (showStatusBarTextLane && isPageBookmarked) {
     const int bookmarkGap = leftClusterWidth > 0 ? bookmarkStatusIconGap : 0;

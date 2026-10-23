@@ -399,6 +399,7 @@ void ParsedText::addWord(std::string word, const EpdFontFamily::Style fontStyle,
   // precomposed glyph is used instead. This runs once per word at layout time (the
   // result is cached in the section file) and is a cheap no-op for mark-free text.
   word = utf8ComposeNfc(word);
+  utf8FixHungarianLegacyAccents(word);
 
   EpdFontFamily::Style baseStyle = fontStyle;
   if (underline) {
